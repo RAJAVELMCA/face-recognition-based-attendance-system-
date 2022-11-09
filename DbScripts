@@ -1,0 +1,96 @@
+ 
+ Create database  Facetracking
+ Go
+
+USE [Facetracking]
+GO
+/****** Object:  Table [dbo].[Attendance]    Script Date: 29-09-2022 01:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Attendance](
+	[AttendanceId] [int] IDENTITY(1,1) NOT NULL,
+	[Rollno] [varchar](10) NULL,
+	[EntryDate] [datetime] NULL,
+	[Flag] [bit] NULL,
+	[UserId] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AttendanceId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Department]    Script Date: 29-09-2022 01:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Department](
+	[DepartmentId] [int] IDENTITY(1,1) NOT NULL,
+	[DepartmentName] [varchar](50) NOT NULL,
+	[DepartmentCode] [varchar](5) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[DepartmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Entrollment]    Script Date: 29-09-2022 01:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Entrollment](
+	[Entrollmentid] [int] IDENTITY(1,1) NOT NULL,
+	[Rollno] [varchar](10) NOT NULL,
+	[FirstName] [varchar](20) NOT NULL,
+	[Lastname] [varchar](20) NOT NULL,
+	[Address] [varchar](50) NOT NULL,
+	[Age] [int] NOT NULL,
+	[Contact] [varchar](10) NOT NULL,
+	[Gender] [varchar](10) NOT NULL,
+	[DOB] [datetime] NOT NULL,
+	[StudentPhoto] [image] NOT NULL,
+	[DepartmentId] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Entrollmentid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+UNIQUE NONCLUSTERED 
+(
+	[Rollno] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[user]    Script Date: 29-09-2022 01:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[user](
+	[userId] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](20) NULL,
+	[LastName] [varchar](20) NULL,
+	[UserName] [varchar](20) NULL,
+	[password] [nvarchar](max) NULL,
+	[IsLogin] [bit] NULL,
+	[IsLock] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[userId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+UNIQUE NONCLUSTERED 
+(
+	[UserName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Attendance] ADD  DEFAULT (getdate()) FOR [EntryDate]
+GO
+ALTER TABLE [dbo].[Attendance]  WITH CHECK ADD FOREIGN KEY([Rollno])
+REFERENCES [dbo].[Entrollment] ([Rollno])
+GO
+ALTER TABLE [dbo].[Entrollment]  WITH CHECK ADD FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Department] ([DepartmentId])
+GO
